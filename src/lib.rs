@@ -188,6 +188,7 @@ where
     if !is_authorized {
         Ok(Response::builder()
             .status(StatusCode::UNAUTHORIZED)
+            .header("WWW-Authenticate", "Basic")
             .body(hyper::Body::empty())
             .unwrap())
     } else if req.uri().path() != "/metrics" {
