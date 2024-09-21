@@ -1,12 +1,22 @@
+#[cfg(feature = "serde")]
+use serde::{Deserialize, Serialize};
 use std::net::SocketAddr;
 
 #[derive(Debug, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 pub enum Authorization {
     None,
     Basic(String),
 }
 
+impl Default for Authorization {
+    fn default() -> Self {
+        Self::None
+    }
+}
+
 #[derive(Debug, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 pub struct TlsOptions {
     /// Path to file containing PEM encoded certificate chain.
     pub certificate_chain_file: String,
@@ -17,8 +27,11 @@ pub struct TlsOptions {
 }
 
 #[derive(Debug, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 pub struct ServerOptions {
     pub addr: SocketAddr,
+    #[serde(default)]
     pub authorization: Authorization,
+    #[serde(default)]
     pub tls_options: Option<TlsOptions>,
 }
